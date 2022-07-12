@@ -2,9 +2,12 @@ public class Basket {
 
     private static int count = 0;
     private String items = "";
-    private int totalPrice = 0;
+    private int totalPrice = 0; // Стоимость всех товаров в одной корзине
     private int limit;
     private double totalWeight = 0;
+
+    private static int cost = 0; // Стоимость товаров во всех корзинах
+    private static int amount = 0; // Общее количество всех товаров
 
     public Basket() {
         increaseCount(1);
@@ -22,6 +25,27 @@ public class Basket {
         this.items = this.items + items;
         this.totalPrice = totalPrice;
     }
+
+    public static void totalCost(int totalPrice){
+        cost = cost + totalPrice;
+    }
+
+    public static void totalAmount(int amount){
+        Basket.amount = Basket.amount + amount;
+
+    }
+
+    public static int averagePrice (){
+        return cost / amount;
+    }
+
+    public static int averageCount (){
+        return cost / count;
+    }
+
+
+
+
 
     public static int getCount() {
         return count;
