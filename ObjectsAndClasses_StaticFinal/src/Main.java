@@ -5,6 +5,8 @@ public class Main {
                 new StorageDevice(4,8,TypeOfStorageDevice.SSD),new Screen(14.5,TypeOfScreen.VA,8.7),
                 new Keyboard(TypeOfKeyboard.mechanical,Backlight.YES,7.8),"APPLE","MacBook Pro");
 
+        computer.setProseccor(new Proseccor(2.8,4,ProcessorManufacturer.Intel,4,4));
+
         System.out.println(computer);
 
     }
