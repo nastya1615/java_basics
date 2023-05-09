@@ -20,26 +20,16 @@ public class Main {
                     while (resultSet.next()){
                         String course_name = resultSet.getString("course_name");
 
-                        ResultSet resultSet1 = statement1.executeQuery("SELECT pl.course_name, MONTH(pl.subscription_date ) FROM PurchaseList pl WHERE pl.course_name = \""+course_name+"\" ORDER BY MONTH(pl.subscription_date )");
-                        ArrayList<Integer> salesCounterByTime = new ArrayList<>();
+                        ResultSet resultSet1 = statement1.executeQuery("SELECT pl.course_name,count(pl.subscription_date)/(MONTH(max(pl.subscription_date)) - MONTH(min(pl.subscription_date)) +1 )FROM PurchaseList pl WHERE pl.course_name = \""+course_name+"\"  group by pl.course_name");
 
-                        while (resultSet1.next()){
 
-                            
-                            String subscriptionDate = resultSet1.getString("MONTH(pl.subscription_date )");
 
-                            salesCounterByTime.add(Integer.parseInt(subscriptionDate));
+                       while (resultSet1.next()){
 
+                           System.out.println(resultSet1.getString("pl.course_name")+" - "+ resultSet1.getString("count(pl.subscription_date)/(MONTH(max(pl.subscription_date)) - MONTH(min(pl.subscription_date)) +1 )"));
 
                         }
-
-                        int numberOfmonths = salesCounterByTime.stream().max(Integer::compare).get();
-                        int numberOfsales = salesCounterByTime.size();
-                        double averagNumberOfPurchases = ((double) numberOfsales / (double)numberOfmonths);
-
-                        System.out.println(course_name + " — " + averagNumberOfPurchases);
-
-
+                       
 
                     }
 
