@@ -1,18 +1,29 @@
+package main.java;
+
+import org.imgscalr.Scalr;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class Main {
+public class ImageResizer implements Runnable{
 
-    public static void main(String[] args) {
-        String srcFolder = "/users/sortedmap/Desktop/src";
-        String dstFolder = "/users/sortedmap/Desktop/dst";
+    private File[] files;
+    private String dstFolder;
+    private int newWidth;
+    private long start;
 
-        File srcDir = new File(srcFolder);
+    public ImageResizer(File[] files,String dstFolder,int newWidth,long start) {
 
-        long start = System.currentTimeMillis();
+        this.files = files;
+        this.dstFolder=dstFolder;
+        this.newWidth= newWidth;
+        this.start = start;
 
-        File[] files = srcDir.listFiles();
+    }
+
+    @Override
+    public void run() {
 
         try {
             for (File file : files) {
@@ -21,13 +32,12 @@ public class Main {
                     continue;
                 }
 
-                int newWidth = 300;
+
                 int newHeight = (int) Math.round(
-                    image.getHeight() / (image.getWidth() / (double) newWidth)
+                        image.getHeight() / (image.getWidth() / (double) newWidth)
                 );
-                BufferedImage newImage = new BufferedImage(
-                    newWidth, newHeight, BufferedImage.TYPE_INT_RGB
-                );
+                BufferedImage newImage = resize(image, newWidth, newHeight);
+                
 
                 int widthStep = image.getWidth() / newWidth;
                 int heightStep = image.getHeight() / newHeight;
@@ -47,5 +57,16 @@ public class Main {
         }
 
         System.out.println("Duration: " + (System.currentTimeMillis() - start));
+
+    }
+
+    private BufferedImage resize(BufferedImage image, int targetWidth, int targetHeight) {
+        return Scalr.resize(
+                image,
+                Scalr.Method.AUTOMATIC,
+                Scalr.Mode.FIT_EXACT,
+                targetWidth,
+                targetHeight,
+                Scalr.OP_ANTIALIAS);
     }
 }
