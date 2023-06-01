@@ -1,7 +1,15 @@
-public class Account {
+package main.java;
 
+public class Account {
     private long money;
     private String accNumber;
+
+
+    public Account(long money, String accNumber) {
+        this.money = money;
+        this.accNumber = accNumber;
+    }
+
 
     public long getMoney() {
         return money;
