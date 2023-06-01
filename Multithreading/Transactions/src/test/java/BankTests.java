@@ -36,10 +36,7 @@ public class BankTests extends TestCase {
     protected void setUp() throws Exception {
          account1 = new Account(120565,"11111111");
          account2 = new Account(10565,"22222222");
-
-
         accounts = new HashMap<>();
-
         accounts.put("11111111",account1);
         accounts.put("22222222",account2);
 

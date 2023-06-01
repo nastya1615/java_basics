@@ -33,8 +33,7 @@ public class Main {
             {
                 Bank bank = new Bank();
                 bank.transfer(account1.getAccNumber(),account2.getAccNumber(),19000,accounts);
-                bank.getBalance(account1.getAccNumber());
-                bank.getBalance(account2.getAccNumber());
+               
             }
         });
         myThready.start();
