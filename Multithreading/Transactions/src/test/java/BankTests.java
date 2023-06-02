@@ -14,8 +14,7 @@ public class BankTests extends TestCase {
 
     Account account1;
     Account account2;
-    Account account3;
-    Account account4;
+
     Map<String, Account> accounts;
 
     private ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -44,30 +43,24 @@ public class BankTests extends TestCase {
 
     }
 
-    public void testBalanceChangeCheck(){
+    public void testBalanceChangeCheck() throws InterruptedException {
+
+
         Thread myThready = new Thread(new Runnable()
         {
             public void run() //Этот метод будет выполняться в побочном потоке
             {
                 Bank bank = new Bank();
                 bank.transfer(account1.getAccNumber(),account2.getAccNumber(),3000,accounts);
-
+                long actual = account1.getMoney();
+                long expected = 117565;
+                long actual1 = account2.getMoney();
+                long expected1 = 13565;
+                assertEquals(actual,expected);
+                assertEquals(actual1,expected1);
             }
         });
         myThready.start();
-        try {
-            myThready.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        long actual = account1.getMoney();
-        long expected = 117565;
-        long actual1 = account2.getMoney();
-        long expected1 = 13565;
-        assertEquals(actual,expected);
-        assertEquals(actual1,expected1);
 
 
     }

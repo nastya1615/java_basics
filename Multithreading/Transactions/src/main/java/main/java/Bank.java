@@ -13,7 +13,7 @@ public class Bank {
 
     public synchronized boolean isFraud(String fromAccountNum, String toAccountNum)
         throws InterruptedException {
-
+        System.out.println(blockAccountList);
 
         blockAccountList.forEach(s->{
 
@@ -35,6 +35,7 @@ public class Bank {
 
 
         }
+        System.out.println(blockAccountList);
 
         return legalTranslation;
     }
@@ -50,29 +51,35 @@ public class Bank {
         Account accountFrom = accounts.get(fromAccountNum);
         Account accountTo = accounts.get(toAccountNum);
 
-        if(accountFrom.getMoney() < amount){
+        synchronized (accountFrom) {
+          synchronized (accountTo) {
 
-            System.out.println("Сумма перевода превышает быланс, в транзакции отказано");
-            return;
-        }
+                if (accountFrom.getMoney() < amount) {
 
-        if(amount > 5000){
-            boolean chek = false;
-            try {
-                chek = isFraud(fromAccountNum,toAccountNum);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                    System.out.println("Сумма перевода превышает быланс, в транзакции отказано");
+                    return;
+                }
+
+                if (amount > 5000) {
+                    boolean chek = false;
+                    try {
+                        chek = isFraud(fromAccountNum, toAccountNum);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (chek == false) {
+                        System.out.println("В транзакции отказано");
+                        return;
+
+                    }
+                }
+
+
+                accountFrom.setMoney(accountFrom.getMoney() - amount);
+                accountTo.setMoney(accountTo.getMoney() + amount);
             }
-
-            if(chek == false){
-                System.out.println("В транзакции отказано");
-                return;
-
-            }
-        }
-
-        accountFrom.setMoney(accountFrom.getMoney()-amount);
-        accountTo.setMoney(accountTo.getMoney()+amount);
+       }
 
     }
 

@@ -32,12 +32,11 @@ public class Main {
             public void run() //Этот метод будет выполняться в побочном потоке
             {
                 Bank bank = new Bank();
-                bank.transfer(account1.getAccNumber(),account2.getAccNumber(),19000,accounts);
-               
+                bank.transfer(account1.getAccNumber(),account2.getAccNumber(),3000,accounts);
+
             }
         });
         myThready.start();
-        myThready.join();
 
         Thread myThready1 = new Thread(new Runnable()
         {
@@ -45,10 +44,11 @@ public class Main {
             {
                 Bank bank = new Bank();
                 bank.transfer(account2.getAccNumber(),account1.getAccNumber(),6000,accounts);
+
             }
         });
         myThready1.start();	//Запуск потока
-        myThready1.join();
+      //  myThready1.join();
 
         Thread myThready2 = new Thread(new Runnable()
         {
@@ -59,7 +59,7 @@ public class Main {
             }
         });
         myThready2.start();	//Запуск потока
-        myThready2.join();
+     //   myThready2.join();
 
         Thread myThready3 = new Thread(new Runnable()
         {
@@ -69,7 +69,7 @@ public class Main {
                 bank.transfer(account3.getAccNumber(),account4.getAccNumber(),6000,accounts);
             }
         });
-        myThready3.start();	//Запуск потока
+        myThready3.start();	//Запуск потока*/
 
 
 
