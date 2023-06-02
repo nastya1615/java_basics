@@ -43,14 +43,14 @@ public class Main {
             public void run() //Этот метод будет выполняться в побочном потоке
             {
                 Bank bank = new Bank();
-                bank.transfer(account2.getAccNumber(),account1.getAccNumber(),6000,accounts);
+                bank.transfer(account2.getAccNumber(),account1.getAccNumber(),3000,accounts);
 
             }
         });
         myThready1.start();	//Запуск потока
       //  myThready1.join();
 
-        Thread myThready2 = new Thread(new Runnable()
+     /*   Thread myThready2 = new Thread(new Runnable()
         {
             public void run() //Этот метод будет выполняться в побочном потоке
             {

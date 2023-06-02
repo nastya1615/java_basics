@@ -51,8 +51,25 @@ public class Bank {
         Account accountFrom = accounts.get(fromAccountNum);
         Account accountTo = accounts.get(toAccountNum);
 
-        synchronized (accountFrom) {
-          synchronized (accountTo) {
+        Account lowSyncAccount;
+        Account topSyncAccount;
+
+        if(Integer.parseInt(accountFrom.getAccNumber())< Integer.parseInt(accountTo.getAccNumber())){
+
+            lowSyncAccount = accountFrom;
+            topSyncAccount = accountTo;
+        }
+
+        else {
+            lowSyncAccount = accountTo;
+            topSyncAccount = accountFrom;
+        }
+
+        synchronized (lowSyncAccount) {
+          synchronized (topSyncAccount) {
+
+              System.out.println("Сумма ДО выполнения транзакции для FROM " + accountFrom.getMoney());
+              System.out.println("Сумма ДО выполнения транзакции для TO " + accountTo.getMoney());
 
                 if (accountFrom.getMoney() < amount) {
 
@@ -76,8 +93,12 @@ public class Bank {
                 }
 
 
+
                 accountFrom.setMoney(accountFrom.getMoney() - amount);
                 accountTo.setMoney(accountTo.getMoney() + amount);
+
+              System.out.println("Сумма после выполнения транзакции для FROM " + accountFrom.getMoney());
+              System.out.println("Сумма после выполнения транзакции для TO " + accountTo.getMoney());
             }
        }
 
