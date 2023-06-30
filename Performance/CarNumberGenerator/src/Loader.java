@@ -4,8 +4,15 @@ import java.io.IOException;
 
 public class Loader  implements Runnable {
     int regionCode;
-    Loader(int regionCode){
+    int theardName;
+
+    int startNamber;
+    int endNamber;
+    Loader(int regionCode, int theardName,int startNamber,int endNamber){
         this.regionCode = regionCode;
+        this.theardName = theardName;
+        this.startNamber = startNamber;
+        this.endNamber = endNamber;
     }
 
         @Override
@@ -15,7 +22,7 @@ public class Loader  implements Runnable {
             FileOutputStream writer = null;
 
             try {
-                writer = new FileOutputStream("res/numbers_"+regionCode+".txt");
+                writer = new FileOutputStream("res/numbers_"+theardName+".txt");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -23,7 +30,7 @@ public class Loader  implements Runnable {
             char letters[] = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
 
             StringBuilder bilder = new StringBuilder();
-            for (int number = 1; number < 1000; number++) {
+            for (int number = startNamber; number < endNamber; number++) {
                 for (char firstLetter : letters) {
                     for (char secondLetter : letters) {
                         for (char thirdLetter : letters) {

@@ -3,10 +3,17 @@
 public class Main {
 
     public static void main(String[] args) {
-        for (int regionCode = 0; regionCode<90;regionCode++){
-            Loader load = new Loader(regionCode);
+        int numTheard  = 9;
+
+        for (int theard = 0; theard <= numTheard; theard++){
+            int startNumber = theard*100;
+            int endNumber = startNumber+100;
+            Loader load = new Loader(199,theard,startNumber,endNumber);
             new Thread(load).start();
         }
+
+
+
 
     }
 }
