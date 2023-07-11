@@ -9,7 +9,14 @@ public class Main {
             int startNumber = theard*100;
             int endNumber = startNumber+100;
             Loader load = new Loader(199,theard,startNumber,endNumber);
-            new Thread(load).start();
+
+            Thread th = new Thread(load);
+            th.start();
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 
