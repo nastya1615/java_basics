@@ -13,22 +13,25 @@ public class XMLHandler extends DefaultHandler {
     private SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     Voter voter;
 
-
-
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if(qName.equals("voter")){
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
+
+
+        if (qName.equals("voter")) {
             try {
+
                 Date birthDay = birthDayFormat.parse(attributes.getValue("birthDay"));
                 voter = new Voter(attributes.getValue("name"), birthDay);
 
-                DBConnection.countVoter(voter.getName(),birthDayFormat.format(voter.getBirthDay()));
+                DBConnection.countVoter(voter.getName(), birthDayFormat.format(voter.getBirthDay()));
 
             } catch (ParseException | SQLException e) {
                 e.printStackTrace();
             }
+
+
         }
+
+
     }
-
-
 }

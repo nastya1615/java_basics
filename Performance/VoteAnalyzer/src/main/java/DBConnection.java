@@ -21,38 +21,57 @@ public class DBConnection {
                     "name TINYTEXT NOT NULL, " +
                     "birthDate DATE NOT NULL, " +
                     "`count` INT NOT NULL, " +
-                    "PRIMARY KEY(id),"+
-                        "UNIQUE KEY name_date(name(50),birthDate))");
+                    "PRIMARY KEY(id)"+
+                        ")");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
+
         return connection;
     }
 
     public static void executeMultiInsert() throws SQLException{
 
-               String sql = "INSERT INTO voter_count(name, birthDate, `count`)  VALUES" + insertQuery.toString()+
-               "ON DUPLICATE KEY UPDATE `count` = `count` +1";
+               String sql = "INSERT INTO voter_count(name, birthDate, `count`)  VALUES" + insertQuery.toString();
 
-        DBConnection.getConnection().createStatement().execute(sql.toString());
+        DBConnection.getConnection().createStatement().execute(sql);
     }
 
-    public static void countVoter(String name, String birthDay) throws SQLException {
+    public static void printVoter(String name, String birthDay){
         birthDay = birthDay.replace('.', '-');
 
         insertQuery.append((insertQuery.length() == 0? "" :",")+
                 "('" + name + "', '" + birthDay + "', 1)");
 
+    }
+
+    public static void countVoter(String name, String birthDay) throws SQLException {
+
+        if (insertQuery.length()<= 1000000){
+           printVoter(name,birthDay);
+        }
+        else {
+
+            printVoter(name,birthDay);
+            executeMultiInsert();
+            insertQuery.delete(0,insertQuery.length());
+        }
+
 
     }
 
     public static void printVoterCounts() throws SQLException {
-        String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE `count` > 1";
+        String sql = "SELECT name, birthDate, COUNT(*) as count FROM voter_count  GROUP BY name, birthDate HAVING count>1 ";
+
+
         ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql);
         while (rs.next()) {
             System.out.println("\t" + rs.getString("name") + " (" +
                 rs.getString("birthDate") + ") - " + rs.getInt("count"));
+
         }
+        rs.close();
     }
 }
